@@ -121,10 +121,11 @@ public class generate_all_tenant_subscriptions {
                 {
                     data_tenantID = resultSet.getString(i);
                 }
+            }
                 TenantDetails tenantDetails = new TenantDetails(data_tenantName,data_tenantID);
                 tenantResource.refreshTenantSubAndSizing(tenantDetails);
                 System.out.println("Fetched and persisted subscriptions and sizing for Tenant " + data_tenantName);
-            }
+            
         }
        
     }
