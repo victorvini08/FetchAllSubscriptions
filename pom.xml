@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jar.main.class>allTenantsSubscriptionReports.generate_all_tenant_subscriptions</jar.main.class>
+        <jar.main.class>allTenantsSubscriptionReports.scheduler_run</jar.main.class>
     </properties>
 
 
@@ -19,6 +19,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -47,6 +48,12 @@
                                     <groupId>bcpkix-fips</groupId>
                                     <artifactId>bcpkix-fips</artifactId>
                                     <version>1.0.1</version>
+                                    <outputDirectory>${project.build.directory}/classpath</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.logging.log4j</groupId>
+                                    <artifactId>log4j-core</artifactId>
+                                    <version>2.20.0</version>
                                     <outputDirectory>${project.build.directory}/classpath</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
@@ -87,8 +94,8 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>allTenantsSubscriptionReports.generate_all_tenant_subscriptions</Main-Class>
-                                        <Class-Path>classpath/bc-fips.jar classpath/bcpkix-fips.jar</Class-Path>
+                                        <Main-Class>allTenantsSubscriptionReports.scheduler_run</Main-Class>
+                                        <Class-Path>classpath/bc-fips.jar classpath/bcpkix-fips.jar classpath/log4j-core.jar</Class-Path>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
@@ -104,7 +111,11 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
         </plugins>
 
     </build>
@@ -132,10 +143,15 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.oracle.pic.accounts</groupId>
-            <artifactId>properties-runtime-java-client</artifactId>
-            <version>2.0.52</version>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>2.25</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.oracle.pic.accounts</groupId>-->
+<!--            <artifactId>properties-runtime-java-client</artifactId>-->
+<!--            <version>2.0.52</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.oracle.pic.commons.client</groupId>
             <artifactId>java-rest-client</artifactId>
@@ -336,6 +352,43 @@
             <groupId>com.oracle.oci.sdk</groupId>
             <artifactId>oci-java-sdk-limits</artifactId>
             <version>2.54.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.7.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-spring-boot</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version>
         </dependency>
     </dependencies>
 

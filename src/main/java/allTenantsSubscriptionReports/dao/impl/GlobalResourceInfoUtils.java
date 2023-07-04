@@ -5,20 +5,24 @@ import allTenantsSubscriptionReports.dao.api.service.*;
 import allTenantsSubscriptionReports.dao.exceptions.JavaSqlException;
 import com.google.inject.Inject;
 import com.oracle.faw.security.DataSecurityInterpreter;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
+//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 
-@Slf4j
+//@Slf4j
+@Log4j2
 public class GlobalResourceInfoUtils implements GlobalResourceInfo {
     @Inject
     private DataSecurityInterpreter dataSecurityInterpreter;
 
     private static final FAWApprovedTrialTO NO_TRIAL_ENTITLEMENTS = null;
 
+    //private static final Logger log = LoggerFactory.getLogger(GlobalResourceInfoUtils.class);
 
 
 

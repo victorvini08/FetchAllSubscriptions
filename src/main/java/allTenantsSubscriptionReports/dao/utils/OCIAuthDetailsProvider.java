@@ -8,15 +8,20 @@ import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.CustomerAuthenticationDetailsProvider;
 import com.oracle.bmc.auth.RegionProvider;
 import com.oracle.faw.cp.common.auth.VaultReader;
+import lombok.extern.log4j.Log4j2;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+//@Slf4j
+@Log4j2
 public class OCIAuthDetailsProvider extends CustomerAuthenticationDetailsProvider
         implements AuthenticationDetailsProvider, RegionProvider {
 
+    //private static final Logger log = LoggerFactory.getLogger(OCIAuthDetailsProvider.class);
     private ControlPlaneInfraUserConfiguration controlPlaneInfraUserConfiguration;
     private String region;
     private VaultReader vaultReader;

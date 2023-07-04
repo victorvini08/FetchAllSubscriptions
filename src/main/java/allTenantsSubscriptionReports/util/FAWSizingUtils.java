@@ -18,9 +18,12 @@ import com.oracle.faw.cp.common.utils.RESTUtils;
 import allTenantsSubscriptionReports.dao.config.ControlPlaneInfraUserConfiguration;
 import allTenantsSubscriptionReports.dao.config.SizingConfiguration;
 import allTenantsSubscriptionReports.dao.utils.OCIAuthDetailsProvider;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,9 +43,11 @@ import java.util.Arrays;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
-@Slf4j
+//@Slf4j
+@Log4j2
 public class FAWSizingUtils {
 
+    //private static final Logger log = LoggerFactory.getLogger(FAWSizingUtils.class);
     private static VaultReader vaultReader;
     private static final String DEV_INTENDED_USE = "dev";
     private static final String TEST_INTENDED_USE = "test";
@@ -110,7 +115,8 @@ public class FAWSizingUtils {
                             .build();
             tenantSizingDetailsList.add(tenantSizingDetails);
         }
-        log.info("Fetched TenantSizingDetailsList {} " + tenantSizingDetailsList);
+        System.out.println("Fetched TenantSizingDetailsList {} " + tenantSizingDetailsList);
+        //log.info("Fetched TenantSizingDetailsList {} " , tenantSizingDetailsList);
         return tenantSizingDetailsList;
     }
 

@@ -12,17 +12,22 @@ import allTenantsSubscriptionReports.DataLoader.exceptions.FAWDaoException;
 import allTenantsSubscriptionReports.DataLoader.utils.GlobalStoreDatabaseUtils;
 import io.dropwizard.lifecycle.Managed;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import oracle.jdbc.pool.OracleDataSource;
 import com.zaxxer.hikari.HikariDataSource;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-@Slf4j
+//@Slf4j
+@Log4j2
 @Singleton
 @Getter
 public class GlobalStoreHandler implements Managed {
 
+   // private static final Logger log = LoggerFactory.getLogger(GlobalStoreHandler.class);
     private final String GLOBAL_STORE_USERNAME = "ADMIN";
     private final String GLOBAL_STORE_SERVICENAME = "oaxglobalstore";
     private final String JDBC_URL = "jdbc:oracle:thin:@";
@@ -75,7 +80,7 @@ public class GlobalStoreHandler implements Managed {
 
         String url = JDBC_URL + globalStoreConnectionHolder.getServiceUrl();
         OracleDataSource oracleDataSource = new OracleDataSource();
-        System.out.println(new String(vaultReader.getSecretAsUtf8Chars(globalStoreConfig.getPasswordPath())));
+        //System.out.println(new String(vaultReader.getSecretAsUtf8Chars(globalStoreConfig.getPasswordPath())));
         oracleDataSource.setUser(GLOBAL_STORE_USERNAME);
         oracleDataSource.setPassword(new String(vaultReader.getSecretAsUtf8Chars(globalStoreConfig.getPasswordPath())));
         oracleDataSource.setURL(url);

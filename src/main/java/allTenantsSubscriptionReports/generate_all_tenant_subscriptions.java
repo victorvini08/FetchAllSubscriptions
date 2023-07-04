@@ -24,7 +24,11 @@ import com.oracle.pic.commons.ssl.DynamicSslContextProviderConfig;
 import com.oracle.pic.identity.authentication.AuthServiceAuthenticationClient;
 import com.oracle.pic.identity.authentication.entities.X509FederationRequest;
 import com.oracle.pic.vault.model.GetSecretResponse;
+import lombok.extern.log4j.Log4j2;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import javax.ws.rs.client.Client;
@@ -35,9 +39,14 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.sql.*;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
+@Log4j2
+@Component
 public class generate_all_tenant_subscriptions {
+
 
     private static GlobalStoreHandler globalStoreHandler;
 
@@ -79,8 +88,10 @@ public class generate_all_tenant_subscriptions {
     };
 
 
-    public static void main(String[] args) throws SQLException {
+    @Scheduled(fixedDelay = 60000)
+    public static void generate_all_subscriptions() throws SQLException {
 
+        System.out.println("Current time is :: " + LocalTime.now());
         globalStoreHandler = createGlobalStoreHandler();
         globalResourceInfo = new GlobalResourceInfoUtils();
 
@@ -108,25 +119,28 @@ public class generate_all_tenant_subscriptions {
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         int countOfColumns = resultSetMetaData.getColumnCount();
 
-
+       // int num_tenants = 0;
         while (resultSet.next()) {
+//            num_tenants++;
+//            if(num_tenants>5) {
+//                break;
+//            }
             String data_tenantName = null;
             String data_tenantID = null;
             for (int i = 1; i <= countOfColumns; i++) {
-                if(Objects.equals(resultSetMetaData.getColumnName(i), "TENANT_NAME"))
-                {
+                if (Objects.equals(resultSetMetaData.getColumnName(i), "TENANT_NAME")) {
                     data_tenantName = resultSet.getString(i);
-                }
-                else if(Objects.equals(resultSetMetaData.getColumnName(i), "TENANT_OCID"))
-                {
+                } else if (Objects.equals(resultSetMetaData.getColumnName(i), "TENANT_OCID")) {
                     data_tenantID = resultSet.getString(i);
                 }
+            }
+                System.out.println("Starting process for Tenant name: " + data_tenantName + " and Tenant OCID: " + data_tenantID);
                 TenantDetails tenantDetails = new TenantDetails(data_tenantName,data_tenantID);
                 tenantResource.refreshTenantSubAndSizing(tenantDetails);
                 System.out.println("Fetched and persisted subscriptions and sizing for Tenant " + data_tenantName);
-            }
+
         }
-       
+        //connection.close();
     }
 
     private static void loadBCProviderWithoutFipsMode() {

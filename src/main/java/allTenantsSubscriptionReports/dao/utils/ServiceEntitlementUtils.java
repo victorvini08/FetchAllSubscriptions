@@ -13,9 +13,11 @@ import com.oracle.faw.cp.common.auth.VaultReader;
 import com.oracle.faw.cp.common.utils.RESTUtils;
 import com.oracle.pic.account.api.AccountServiceClient;
 import com.oracle.pic.account.model.ServiceEntitlementFull;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,11 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
+//@Slf4j
 public class ServiceEntitlementUtils {
-    private static Integer NETSUITE_SMALL_USER_COUNT = 10;
-    private static Integer NETSUITE_MEDIUM_USER_COUNT = 50;
-    private static Integer NETSUITE_LARGE_USER_COUNT = 100;
+
+    private static final Logger log = LoggerFactory.getLogger(ServiceEntitlementUtils.class);
     private static final String SERVICE_NAME = "ANALYTICSAPP";
     private static final String SERVICE_ENTITLEMENT_NAME_ERP = "ANALYTICSAPP_SAAS_OCI_ERP_UPM";
     private static final String SERVICE_ENTITLEMENT_NAME_HCM = "ANALYTICSAPP_SAAS_OCI_HCM_EPM";
@@ -41,26 +42,9 @@ public class ServiceEntitlementUtils {
     private static final String SERVICE_ENTITLEMENT_NAME_ERP_EMPLOYEES = "ANALYTICSAPP_SAAS_OCI_ERP_EPM";
     private static final String SERVICE_ENTITLEMENT_NAME_SCM_EMPLOYEES = "ANALYTICSAPP_SAAS_OCI_SCM_EPM";
     private static final String SERVICE_ENTITLEMENT_NAME_ADDITIONAL_ENVIRONMENT = "ANALYTICSAPP_SAAS_OCI_ADDITIONAL_ENVIRONMENT";
-    private static final String PART_NUMBER_ERP = "B91150";
-    private static final String PART_NUMBER_HCM = "B92354";
-    private static final String PART_NUMBER_SCM = "B94572";
-    private static final String PART_NUMBER_CX = "B95495";
-    private static final String PART_NUMBER_ERP_EMPLOYEES = "B93514";
-    private static final String PART_NUMBER_SCM_EMPLOYEES = "B95478";
-    private static final String PART_NUMBER_ADDITIONAL_ENVIRONMENT = "B93515";
-    private static final String LIMITS_GROUP_NAME = "analytics-apps-for-fusion";
-    private static final String SKIP_ENTITLEMENT_VALIDATION = "skip-entitlement-validation";
-    private static final String OPC_SERVICE_NAME = "faw";
-    // TODO - Add the actual value of the trial account entitlement here
-    private static final String TRIAL_ENTITLEMENT_IN_ACCOUNTS = "";
 
-    private static final Integer ALLOWED_NUM_INSTANCES_PROD = 1;
-    private static final Integer ALLOWED_NUM_INSTANCES_DEV_TEST = 1;
-    private static final Integer ALLOWED_TRIAL_INSTANCES = 1;
-    private static final String EXPIRATION_STATUS_ACTIVE = "Active";
-    private static final String EXPIRATION_STATUS_EXPIRED = "Expired";
+
     private static final String MOCK_API_CHOICE_ACCOUNTS = "Accounts";
-    private static final String MOCK_API_CHOICE_SUBSCRIPTION = "Subscription";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+SSSS");
 
     private static VaultReader vaultReader;

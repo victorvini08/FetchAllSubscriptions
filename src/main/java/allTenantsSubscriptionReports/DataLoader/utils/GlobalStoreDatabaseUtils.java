@@ -15,16 +15,21 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import allTenantsSubscriptionReports.DataLoader.GlobalStoreHandler;
 import allTenantsSubscriptionReports.DataLoader.config.GlobalStoreConnectionHolder;
 import com.oracle.faw.cp.common.auth.VaultReader;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.math.NumberUtils;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 
-
-@Slf4j
+//@Slf4j
+@Log4j2
 public class GlobalStoreDatabaseUtils  {
 
+   // private static final Logger log = LoggerFactory.getLogger(GlobalStoreDatabaseUtils.class);
     private VaultReader vaultReader;
 
     private static final Integer BUFFER_SIZE = 16384;

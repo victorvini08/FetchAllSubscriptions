@@ -13,17 +13,23 @@ import allTenantsSubscriptionReports.resource.TenantDetails;
 import com.oracle.pic.account.api.AccountServiceClient;
 import com.oracle.pic.account.model.AccountObject;
 import com.oracle.pic.account.model.Tenant;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Slf4j
+//@Slf4j
+@Log4j2
 public class TenantService {
+
+   // private static final Logger log = LoggerFactory.getLogger(TenantService.class);
     private TenantDAO tenantDAO;
     private AccountServiceClient accountServiceClient;
     private FAWDao fawDao;
@@ -54,24 +60,29 @@ public class TenantService {
                     null, null, tenantName, null, null, null);
             tenantOcid = tenants.get(0).getOcid();
         }
-        log.info("Fetching subscriptions and sizing for tenant {}", tenantOcid);
+        System.out.println("Fetching subscriptions and sizing for tenant {}" + tenantOcid);
+        //log.info("Fetching subscriptions and sizing for tenant {}", tenantOcid);
         List<FAWEntitlementTO> accountsEntitlementList;
 
         ImmutablePair<Map<String, AccountsSKU>, Map<String, AccountsSKU>> skuDataFromAccounts =
                     ServiceEntitlementUtils.getSKUDataFromAccounts(tenantOcid, accountServiceClient);
             accountsEntitlementList = FAWSizingUtils.buildAccountsEntitlementList(skuDataFromAccounts);
-        log.info("Fetched Entire FawApplicationList for tenant {} ", accountsEntitlementList);
+        System.out.println("Fetched Entire FawApplicationList for tenant {} " + accountsEntitlementList);
+        //log.info("Fetched Entire FawApplicationList for tenant {} ", accountsEntitlementList);
         List<FAWEntitlementTO> activeAccountsEntitlementList = accountsEntitlementList.stream()
                 .filter(s -> s.getExpirationStatus().equalsIgnoreCase("Active"))
                 .collect(Collectors.toList());
         List<String> activeFawApplicationList = activeAccountsEntitlementList.stream().map(FAWEntitlementTO::toJsonString).collect(Collectors.toList());
-        log.info("Fetched Active FawApplicationList for tenant {} ", activeFawApplicationList);
+        System.out.println("Fetched Active FawApplicationList for tenant {} "+ activeFawApplicationList);
+        //log.info("Fetched Active FawApplicationList for tenant {} ", activeFawApplicationList);
         List<TenantSizingDetailsTO> tenantSizing = FAWSizingUtils.getTenantSizing(fawPodApiConfig,
                 activeFawApplicationList);
         TenantSubAndSizingTO tenantSubAndSizingTO = FAWSizingUtils.buildTenantSubAndSizingTO(tenantName,
                 tenantOcid, accountsEntitlementList , tenantSizing);
-        log.info("Fetched Subscription & Sizing for tenant {}", tenantSubAndSizingTO);
+        System.out.println("Fetched Subscription & Sizing for tenant {}" + tenantSubAndSizingTO);
+        //log.info("Fetched Subscription & Sizing for tenant {}", tenantSubAndSizingTO);
         tenantDAO.persistTenantSubAndSizing(tenantSubAndSizingTO);
+        System.out.println("Persisted Subscription & Sizing for tenant {}" + tenantSubAndSizingTO);
     }
 
 }
